@@ -6,8 +6,8 @@ Thanks both.
 
 ### Steps:
 1. git checkout this repo with branch `win-msys`.
-2. git apply -v msys-win-diff.patch
-3. make LDFLAGS='-lncurses' && make install  
+2. `git apply -v msys-win-diff.patch`.
+3. `make LDFLAGS='-lncurses' && make install`.
 
 Thanks.
 
