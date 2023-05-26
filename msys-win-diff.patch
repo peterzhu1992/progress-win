@@ -1,0 +1,74 @@
+diff --git a/progress.c b/progress.c
+index 3323a89..31658ca 100644
+--- a/progress.c
++++ b/progress.c
+@@ -50,6 +50,9 @@
+ #ifdef __linux__
+ # include <linux/fs.h>
+ #endif // __linux__
++#ifdef __CYGWIN__ // also for msys2
++# include <cygwin/fs.h>
++#endif // __CYGWIN__
+ #ifdef __FreeBSD__
+ # include <sys/disk.h>
+ #endif // __FreeBSD__
+@@ -202,7 +205,8 @@ free(pids);
+ return pid_count;
+ }
+ #endif // __APPLE__
+-#ifdef __linux__
++//#ifdef __linux__
++#if defined(__linux__) || defined(__CYGWIN__)
+ int find_pid_by_id(pid_t pid, pidinfo_t *pid_list)
+ {
+ char fullpath_exe[MAXPATHLEN + 1];
+@@ -404,7 +408,8 @@ for(i = 0; i < numberOfProcFDs; i++) {
+ return count;
+ }
+ #endif // __APPLE__
+-#ifdef __linux__
++//#ifdef __linux__
++#if defined(__linux__) || defined(__CYGWIN__)
+ int find_fd_for_pid(pid_t pid, int *fd_list, int max_fd)
+ {
+ DIR *proc;
+@@ -537,7 +542,8 @@ return count;
+ signed char get_fdinfo(pid_t pid, int fdnum, fdinfo_t *fd_info)
+ {
+ struct stat stat_buf;
+-#ifdef __linux__
++//#ifdef __linux__
++#if defined(__linux__) || defined(__CYGWIN__)
+ char fdpath[MAXPATHLEN + 1];
+ char line[LINE_LEN];
+ FILE *fp;
+@@ -554,7 +560,8 @@ if (proc_pidfdinfo(pid, fdnum, PROC_PIDFDVNODEPATHINFO, &vnodeInfo, PROC_PIDFDVN
+     return 0;
+ strncpy(fd_info->name, vnodeInfo.pvip.vip_path, MAXPATHLEN);
+ #endif // __APPLE__
+-#ifdef __linux__
++//#ifdef __linux__
++#if defined(__linux__) || defined(__CYGWIN__)
+ ssize_t len;
+ snprintf(fdpath, MAXPATHLEN, "%s/%d/fd/%d", PROC_PATH, pid, fdnum);
+ 
+@@ -664,7 +671,8 @@ if (S_ISBLK(stat_buf.st_mode)) {
+         return 0;
+     }
+ #endif
+-#ifdef __linux__
++//#ifdef __linux__
++#if defined(__linux__) || defined(__CYGWIN__)
+     if (ioctl(fd, BLKGETSIZE64, &fd_info->size) < 0) {
+         if (flag_debug)
+             nperror("ioctl (get_fdinfo)");
+@@ -687,7 +695,8 @@ if (vnodeInfo.pfi.fi_openflags & FWRITE)
+ if (vnodeInfo.pfi.fi_openflags & FREAD && vnodeInfo.pfi.fi_openflags & FWRITE)
+     fd_info->mode = PM_READWRITE;
+ #endif // __APPLE__
+-#ifdef __linux__
++//#ifdef __linux__
++#if defined(__linux__) || defined(__CYGWIN__)
+ flags = 0;
+ fd_info->pos = 0;
+ 

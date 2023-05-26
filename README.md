@@ -1,3 +1,20 @@
+### Notes:
+This is a fork based on [Xfennec/progress](https://github.com/Xfennec/progress) source code, and the [Windows MSYS2 change by user sdbbs](https://github.com/Xfennec/progress/issues/168).
+Able to build and run on MSYS2.
+Thanks both.
+
+
+### Steps:
+1. git checkout this repo with branch `win-msys`.
+2. git apply -v msys-win-diff.patch
+3. make LDFLAGS='-lncurses' && make install  
+
+Thanks.
+
+
+----------
+
+
 progress - Coreutils Progress Viewer [![Build Status](https://travis-ci.org/Xfennec/progress.svg?branch=master)](https://travis-ci.org/Xfennec/progress)
 =====================
 
